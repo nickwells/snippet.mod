@@ -1,0 +1,3 @@
+// snippet: this file exists only to have its permission changed to be
+// snippet: made unreadable. It is otherwise fine.
+fmt.Println("I'm fine!")

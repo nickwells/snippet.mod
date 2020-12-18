@@ -1,0 +1,18 @@
+// snippet: a snippet
+// snippet: Note: note 1
+// snippet: Note: note 2
+// snippet: Import:
+// snippet: Import: package/one
+// snippet: Import: package/two
+// snippet: Expect:
+// snippet: Expect: anotherSnippet1
+// snippet: Expect: anotherSnippet2
+// snippet: ComesAfter: 
+// snippet: ComesAfter: anotherSnippet2
+// snippet: ComesAfter: anotherSnippet3
+// snippet: Tag: Author: John Doe
+// snippet: Tag: Author: John Barleycorn
+// snippet: Tag: Author: Nedd Ludd
+// snippet: Tag: XXX: YYY
+// snippet: Tag: XXX: YYY yyy
+fmt.Println("This is a snippet")

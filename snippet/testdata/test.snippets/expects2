@@ -1,0 +1,3 @@
+// snippet: has expectations
+//snippet:Expect:expects3
+fmt.Println("England expects...")

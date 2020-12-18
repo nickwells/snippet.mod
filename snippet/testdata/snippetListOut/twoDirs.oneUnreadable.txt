@@ -1,0 +1,7 @@
+in: testdata/good.snippets
+	helloWorld
+		           : Hello, World!
+	hw
+		           : Hello, World!
+	subDir1/goodNoExp
+		           : Hello, UnderWorld!
