@@ -1,5 +1,3 @@
 in: testdata/good.snippets
-    hw
-           Note: Hello, World!
     subDir1/goodNoExp
            Note: Hello, UnderWorld!

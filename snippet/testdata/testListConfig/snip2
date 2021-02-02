@@ -1,0 +1,13 @@
+contents of snip2
+// snippet: Note: snip2 - Note
+// snippet: Notes: snip2 - Notes
+// snippet: Doc: snip2 - Doc
+// snippet: Docs: snip2 - Docs
+// snippet: note: snip2 - note
+// snippet: notes: snip2 - notes
+// snippet: doc: snip2 - doc
+// snippet: docs: snip2 - docs
+// snippet: Imports: snip2/xxx
+// snippet: Expects: snip1
+//snippet:ComesAfter:snip1
+//snippet:Tag:Declares:__snip2XXX

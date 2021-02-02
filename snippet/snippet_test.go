@@ -126,7 +126,7 @@ func TestCmpTags(t *testing.T) {
 				"B": {"the", "quality", "of", "mercy"},
 				"C": {"is", "not", "strained"},
 			},
-			expErr: errors.New(`C differs:
+			expErr: errors.New(`Tag:C differs:
 	the lengths differ: 4 != 3
 	entry[0] differs: "the" != "is"
 	2 additional differences were found`),

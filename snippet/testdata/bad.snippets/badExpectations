@@ -1,0 +1,2 @@
+// snippet: expect: noSuchSnippet
+fmt.Println("Hello, World!")

@@ -13,20 +13,56 @@ import (
 )
 
 const (
-	CommentStr = "snippet:"
-	NoteStr    = "Note:"
-	ImportStr  = "Import:"
-	ExpectStr  = "Expect:"
-	AfterStr   = "ComesAfter:"
-	TagStr     = "Tag:"
+	// these are named parts of the snippet for listing
+	NamePart = "name"
+	PathPart = "path"
+	TextPart = "text"
 
-	commentREStr = `^\s*//\s*` + CommentStr
-	noteREStr    = commentREStr + `\s*` + NoteStr + `\s*`
-	importREStr  = commentREStr + `\s*` + ImportStr + `\s*`
-	expectREStr  = commentREStr + `\s*` + ExpectStr + `\s*`
-	afterREStr   = commentREStr + `\s*` + AfterStr + `\s*`
-	tagREStr     = commentREStr + `\s*` + TagStr + `\s*`
+	DocsPart   = "note"
+	ExpectPart = "expects"
+	ImportPart = "imports"
+	FollowPart = "follows"
+	TagPart    = "tag"
+
+	// these correspond to semantic comments in the snippet
+	CommentStr = "snippet:"
+	NoteStr    = DocsPart + ":"
+	ImportStr  = ImportPart + ":"
+	ExpectStr  = ExpectPart + ":"
+	AfterStr   = FollowPart + ":"
+	TagStr     = TagPart + ":"
+
+	// Regexp - note they are all case-blind because of the leading "(?i)"
+	commentREStr = `^(?i)\s*//\s*` + CommentStr
+	noteREStr    = commentREStr + `\s*` + `(?:` + DocsPart + `|notes|doc|docs):\s*`
+	importREStr  = commentREStr + `\s*` + `(?:` + ImportPart + `|import):\s*`
+	expectREStr  = commentREStr + `\s*` + `(?:` + ExpectPart + `|expect):\s*`
+	afterREStr   = commentREStr + `\s*` + `(?:` + FollowPart + `|follow|comesafter):\s*`
+	tagREStr     = commentREStr + `\s*` + `(?:` + TagPart + `|tags):\s*`
 )
+
+var validParts = map[string]string{
+	NamePart:   "the snippet name",
+	PathPart:   "the name of the snippet file",
+	TextPart:   "the snippet code to be used",
+	DocsPart:   "how the snippet should be used",
+	ExpectPart: "snippets used with this",
+	ImportPart: "packages this snippet imports",
+	FollowPart: "snippets coming before this",
+	TagPart:    "colon-separated name/value pairs",
+}
+
+// ValidParts returns a map which has an entry for all the valid parts of a
+// snippet with a brief description of the part and how it is used.
+func ValidParts() map[string]string {
+	rval := make(map[string]string)
+
+	for k, v := range validParts {
+		rval[k] = v
+	}
+
+	return rval
+}
 
 var (
 	commentRE = regexp.MustCompile(commentREStr)
@@ -99,7 +135,7 @@ func cmpTags(a, b map[string][]string) error {
 	}
 
 	for tag, vals := range a {
-		err := cmpSlice(tag, vals, b[tag])
+		err := cmpSlice("Tag:"+tag, vals, b[tag])
 		if err != nil {
 			return err
 		}
@@ -206,58 +242,8 @@ func (s S) Tags() map[string][]string {
 
 // String returns a string representation of the snippet
 func (s S) String() string {
-	rval := s.name + "\n"
-
-	maxKeyLen := 0
-
-	parts := []struct {
-		intro   string
-		entries []string
-	}{
-		{intro: "", entries: s.docs},
-		{intro: "Imports", entries: s.imports},
-		{intro: "Expect", entries: s.expects},
-		{intro: "Must Follow", entries: s.follows},
-	}
-	for _, p := range parts {
-		if len(p.intro) > maxKeyLen {
-			maxKeyLen = len(p.intro)
-		}
-	}
-
-	var tagKeys []string
-	for k := range s.tags {
-		tagKeys = append(tagKeys, k)
-		if len(k) > maxKeyLen {
-			maxKeyLen = len(k)
-		}
-	}
-	sort.Strings(tagKeys)
-
-	for _, p := range parts {
-		intro := fmt.Sprintf("%*s: ", maxKeyLen, p.intro)
-		rval += formatSlice(intro, p.entries)
-	}
-	for _, k := range tagKeys {
-		intro := fmt.Sprintf("%*s: ", maxKeyLen, k)
-		rval += formatSlice(intro, s.tags[k])
-	}
-	return rval
-}
-
-// formatSlice will return the content concatenated together on separate
-// lines with the first line prefixed by the intro
-func formatSlice(intro string, content []string) string {
-	if len(content) == 0 {
-		return ""
-	}
-	rval := ""
-	blanks := strings.Repeat(" ", len(intro))
-	for _, l := range content {
-		rval += "\t\t" + intro + l + "\n"
-		intro = blanks
-	}
-	return rval
+	fc := formatCfg{}
+	return fc.snippetToString(&s)
 }
 
 // readSnippetFile will open and read the contents of a snippet file and
