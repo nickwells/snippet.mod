@@ -173,7 +173,9 @@ func (lc *ListCfg) listDir(dir string, ck constraintCk) {
 		return
 	}
 
-	lc.intro = "in: " + dir + "\n"
+	if !lc.hideIntro {
+		lc.intro = "in: " + dir + "\n"
+	}
 	for _, f := range dirEntries {
 		lc.display(dir, "", f, ck)
 	}

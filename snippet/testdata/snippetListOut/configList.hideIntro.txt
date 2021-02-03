@@ -1,4 +1,3 @@
-in: testdata/good.snippets
 hw
 Hello, World!
 subDir1/goodNoExp
