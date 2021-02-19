@@ -4,7 +4,7 @@ import (
 	"crypto/md5"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"sort"
@@ -163,7 +163,7 @@ func (lc *ListCfg) tidy() {
 // listDir reads the given directory and reports on any snippets it find
 // subject to any constraints given by the ListCfg.
 func (lc *ListCfg) listDir(dir string, ck constraintCk) {
-	dirEntries, err := ioutil.ReadDir(dir)
+	dirEntries, err := os.ReadDir(dir)
 	if err != nil {
 		if !os.IsNotExist(err) {
 			lc.errs.AddError(
@@ -176,8 +176,8 @@ func (lc *ListCfg) listDir(dir string, ck constraintCk) {
 	if !lc.hideIntro {
 		lc.intro = "in: " + dir + "\n"
 	}
-	for _, f := range dirEntries {
-		lc.display(dir, "", f, ck)
+	for _, de := range dirEntries {
+		lc.display(dir, "", de, ck)
 	}
 }
 
@@ -284,7 +284,7 @@ func List(w io.Writer, dirs []string, errs *errutil.ErrMap) {
 // and prints it. Any errors detected are recorded and the snippet will not
 // be displayed.
 func (lc *ListCfg) displaySnippet(dir, fName, sName string) {
-	content, err := ioutil.ReadFile(fName)
+	content, err := os.ReadFile(fName)
 	if err != nil {
 		lc.errs.AddError(
 			"Bad snippet",
@@ -324,21 +324,21 @@ func (lc *ListCfg) printIntroOnce() {
 
 // display reports the file if it is a regular file, descends into the sub
 // directory if it is a directory and reports it as a problem otherwise
-func (lc *ListCfg) display(dir, subDir string, f os.FileInfo, ck constraintCk) {
-	sName := f.Name()
+func (lc *ListCfg) display(dir, subDir string, de fs.DirEntry, ck constraintCk) {
+	sName := de.Name()
 	if subDir != "" {
 		sName = filepath.Join(subDir, sName)
 	}
 	fName := filepath.Join(dir, sName)
 
-	if f.Mode().IsRegular() ||
-		f.Mode()&os.ModeSymlink == os.ModeSymlink {
+	if de.Type().IsRegular() ||
+		de.Type()&os.ModeSymlink == os.ModeSymlink {
 		if ck == checkConstraints &&
 			!lc.specificFileMatch(sName) {
 			return
 		}
 		lc.displaySnippet(dir, fName, sName)
-	} else if f.IsDir() {
+	} else if de.IsDir() {
 		if ck == checkConstraints {
 			if !lc.specificDirMatch(sName) {
 				return
@@ -351,20 +351,20 @@ func (lc *ListCfg) display(dir, subDir string, f os.FileInfo, ck constraintCk) {
 		lc.descend(dir, sName, ck)
 	} else {
 		lc.errs.AddError("Unexpected file type",
-			fmt.Errorf("%q: %s", fName, f.Mode()))
+			fmt.Errorf("%q: %s", fName, de.Type()))
 	}
 }
 
 // descend displays the contents of the sub directory
 func (lc *ListCfg) descend(dir, subDir string, ck constraintCk) {
 	name := filepath.Join(dir, subDir)
-	files, err := ioutil.ReadDir(name)
+	dirEntries, err := os.ReadDir(name)
 	if err != nil {
 		lc.errs.AddError(fmt.Sprintf("Bad sub-directory: %q", subDir), err)
 		return
 	}
-	for _, f := range files {
-		lc.display(dir, subDir, f, ck)
+	for _, de := range dirEntries {
+		lc.display(dir, subDir, de, ck)
 	}
 }
 

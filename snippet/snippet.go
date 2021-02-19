@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -253,7 +253,7 @@ func (s S) String() string {
 // returned.
 func readSnippetFile(dirs []string, sName string) ([]byte, string, error) {
 	if filepath.IsAbs(sName) {
-		content, err := ioutil.ReadFile(sName)
+		content, err := os.ReadFile(sName)
 		return content, sName, err
 	}
 
@@ -263,7 +263,7 @@ func readSnippetFile(dirs []string, sName string) ([]byte, string, error) {
 
 	for _, dir := range dirs {
 		fName := filepath.Join(dir, sName)
-		content, err := ioutil.ReadFile(fName)
+		content, err := os.ReadFile(fName)
 		if err == nil {
 			return content, fName, nil
 		}
