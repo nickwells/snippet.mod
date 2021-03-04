@@ -1,6 +1,6 @@
-github.com/nickwells/errutil.mod v1.1.2 h1:f4KxyGgY/Q6g6uHSs8efzRuMN08vyP5zUWRH75qNvsA=
-github.com/nickwells/errutil.mod v1.1.2/go.mod h1:kQkM4oYKYTVnFiZLdF+iPRL0PNbyV8fAQ/hozFV3vL4=
-github.com/nickwells/testhelper.mod v1.14.1 h1:3/7+0EV69fdKEPZfVRVkPDrPGnXx37V5+wmLOfgT0FA=
-github.com/nickwells/testhelper.mod v1.14.1/go.mod h1:Ct/U2PjL0n9hGc+US6uR/s4NxSRI33NM+0ZkrDkG0XI=
-github.com/nickwells/twrap.mod v1.4.11 h1:NS1Lm0N2/Vy515qxjsNbTUYm9eSzC5NSU3XdOwVf71g=
-github.com/nickwells/twrap.mod v1.4.11/go.mod h1:m8+01YkzEB/FKcyiT451ITJPqwH6rH2PwWuM9FCnfaE=
+github.com/nickwells/errutil.mod v1.1.3 h1:RJdlJiVL/JvGmt8Pmu9vQLUnhAC9fBa1DXVKx9rQZ6g=
+github.com/nickwells/errutil.mod v1.1.3/go.mod h1:iyimvn+H6DnVjpaKBEAhkWAIvoeMjnJYJFU+88X+b9M=
+github.com/nickwells/testhelper.mod v1.15.0 h1:5tP4pOfaUL99uPurRDUrtyd0TisOaYMWg/frwKAEXAc=
+github.com/nickwells/testhelper.mod v1.15.0/go.mod h1:Ct/U2PjL0n9hGc+US6uR/s4NxSRI33NM+0ZkrDkG0XI=
+github.com/nickwells/twrap.mod v1.4.12 h1:UHX2YqapAvwlHX/ts/8TAMpaT5SznvhPFMuygA4QJrk=
+github.com/nickwells/twrap.mod v1.4.12/go.mod h1:6A0rjOm6BlGfkoNlsn6prUrrSHLsvlqcNyDqAgs52fQ=
