@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/nickwells/errutil.mod/errutil"
+	"github.com/nickwells/pager.mod/pager"
 )
 
 // constraintCk controls whether or not to check constraints
@@ -74,8 +75,7 @@ func HideIntro(val bool) ListCfgOptFunc {
 // ListCfg holds the configuration for controlling the listing of snippets
 type ListCfg struct {
 	formatCfg
-	// w is the writer that the snippet listing is written to
-	w io.Writer
+	pager.Writers
 	// dirs is the list of snippet dirs to search
 	dirs []string
 	// errs is where to record any errors found while listing
@@ -117,7 +117,7 @@ func NewListCfg(w io.Writer,
 	errs *errutil.ErrMap,
 	opts ...ListCfgOptFunc) (*ListCfg, error) {
 	lc := &ListCfg{
-		w:           w,
+		Writers:     pager.DfltWriters(),
 		dirs:        dirs,
 		errs:        errs,
 		constraints: map[string]bool{},
@@ -126,6 +126,9 @@ func NewListCfg(w io.Writer,
 		contentHash: map[[md5.Size]byte]string{},
 		expectedBy:  map[string][]string{},
 	}
+	lc.SetStdWriter(w)
+	lc.SetErrWriter(w)
+
 	lc.formatCfg.parts = map[string]bool{}
 	lc.formatCfg.tags = map[string]bool{}
 
@@ -186,6 +189,7 @@ func (lc *ListCfg) listDir(dir string, ck constraintCk) {
 func (lc *ListCfg) List() {
 	lc.tidy()
 
+	pgr := pager.Start(lc)
 	for sName := range lc.constraints {
 		if filepath.IsAbs(sName) {
 			f, err := os.Stat(sName)
@@ -208,6 +212,7 @@ func (lc *ListCfg) List() {
 	}
 
 	lc.checkExpectedSnippetsExist()
+	pgr.Done()
 }
 
 // checkExpectedSnippetsExist checks that all the snippets which are expected
@@ -308,7 +313,7 @@ func (lc *ListCfg) displaySnippet(dir, fName, sName string) {
 	text := lc.formatCfg.snippetToString(s)
 	if text != "" {
 		lc.printIntroOnce()
-		fmt.Fprint(lc.w, text)
+		fmt.Fprint(lc.StdWriter(), text)
 	}
 }
 
@@ -318,7 +323,7 @@ func (lc *ListCfg) printIntroOnce() {
 	if lc.intro == "" {
 		return
 	}
-	fmt.Fprint(lc.w, lc.intro)
+	fmt.Fprint(lc.StdWriter(), lc.intro)
 	lc.intro = ""
 }
 

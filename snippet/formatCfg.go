@@ -68,18 +68,31 @@ func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint: gocyclo
 				values: s.imports,
 			})
 	}
-	if partsAndTagsEmpty || fc.parts[ExpectPart] {
-		parts = append(parts,
-			partsToShow{
-				intro:  "Expects:",
-				values: s.expects,
-			})
-	}
 	if partsAndTagsEmpty || fc.parts[FollowPart] {
 		parts = append(parts,
 			partsToShow{
 				intro:  "Follows:",
 				values: s.follows,
+			})
+	}
+	if partsAndTagsEmpty || fc.parts[ExpectPart] {
+		expectedParts := make([]string, 0, len(s.expects))
+		for _, e := range s.expects {
+			addName := true
+			for _, f := range s.follows {
+				if e == f {
+					addName = false
+					break
+				}
+			}
+			if addName {
+				expectedParts = append(expectedParts, e)
+			}
+		}
+		parts = append(parts,
+			partsToShow{
+				intro:  "Expects:",
+				values: expectedParts,
 			})
 	}
 
@@ -138,7 +151,7 @@ func maxIntroLen(parts []partsToShow) int {
 // to the formatCfg
 func (fc *formatCfg) snippetToString(s *S) string {
 	parts := fc.initPartsToShow(s)
-	rval := ""
+	rval := "\n"
 
 	if fc.hideIntro {
 		for _, p := range parts {

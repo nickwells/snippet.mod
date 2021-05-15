@@ -1,3 +1,4 @@
 in: testdata/good.snippets
+
     hw
            Note: Hello, World!

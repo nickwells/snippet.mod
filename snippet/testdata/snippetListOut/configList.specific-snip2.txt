@@ -1,3 +1,4 @@
+
     /home/ngw/go/src/github.com/nickwells/snippet.mod/snippet/testdata/testListConfig/snip2
             Note: snip2 - Note
                   snip2 - Notes
@@ -8,6 +9,5 @@
                   snip2 - doc
                   snip2 - docs
          Imports: snip2/xxx
-         Expects: snip1
          Follows: snip1
         Declares: __snip2XXX

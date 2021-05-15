@@ -1,2 +1,3 @@
+
     /home/ngw/go/src/github.com/nickwells/snippet.mod/snippet/testdata/testListConfig/snip1
            Note: snip1 - Note
