@@ -36,7 +36,7 @@ type partsToShow struct {
 func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint: gocyclo
 	parts := []partsToShow{}
 
-	var partsAndTagsEmpty = len(fc.parts) == 0 && len(fc.tags) == 0
+	partsAndTagsEmpty := len(fc.parts) == 0 && len(fc.tags) == 0
 
 	if partsAndTagsEmpty || fc.parts[NamePart] {
 		indent := nameIndent
@@ -111,7 +111,8 @@ func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint: gocyclo
 			parts = append(parts,
 				partsToShow{
 					intro:  k + ":",
-					values: s.tags[k]})
+					values: s.tags[k],
+				})
 		}
 	}
 

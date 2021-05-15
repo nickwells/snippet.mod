@@ -15,7 +15,7 @@ func TestSnippetCache(t *testing.T) {
 		name   string
 		expErr error
 	}
-	var snippetDirs = []string{TestSnippets}
+	snippetDirs := []string{TestSnippets}
 	const badNoText = "badNoText"
 
 	testCases := []struct {
@@ -119,7 +119,7 @@ func TestSnippetCache(t *testing.T) {
 				}
 			}
 		}
-		var errMap = errutil.NewErrMap()
+		errMap := errutil.NewErrMap()
 		sc.Check(errMap)
 		err := errMap.Matches(tc.expCheckErrs)
 		if err != nil {
