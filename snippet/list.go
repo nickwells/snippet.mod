@@ -117,7 +117,7 @@ func NewListCfg(w io.Writer,
 	errs *errutil.ErrMap,
 	opts ...ListCfgOptFunc) (*ListCfg, error) {
 	lc := &ListCfg{
-		Writers:     pager.DfltWriters(),
+		Writers:     pager.W(),
 		dirs:        dirs,
 		errs:        errs,
 		constraints: map[string]bool{},
@@ -126,8 +126,8 @@ func NewListCfg(w io.Writer,
 		contentHash: map[[md5.Size]byte]string{},
 		expectedBy:  map[string][]string{},
 	}
-	lc.SetStdWriter(w)
-	lc.SetErrWriter(w)
+	lc.SetStdW(w)
+	lc.SetErrW(w)
 
 	lc.formatCfg.parts = map[string]bool{}
 	lc.formatCfg.tags = map[string]bool{}
@@ -313,7 +313,7 @@ func (lc *ListCfg) displaySnippet(dir, fName, sName string) {
 	text := lc.formatCfg.snippetToString(s)
 	if text != "" {
 		lc.printIntroOnce()
-		fmt.Fprint(lc.StdWriter(), text)
+		fmt.Fprint(lc.StdW(), text)
 	}
 }
 
@@ -323,7 +323,7 @@ func (lc *ListCfg) printIntroOnce() {
 	if lc.intro == "" {
 		return
 	}
-	fmt.Fprint(lc.StdWriter(), lc.intro)
+	fmt.Fprint(lc.StdW(), lc.intro)
 	lc.intro = ""
 }
 

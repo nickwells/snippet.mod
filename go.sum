@@ -1,7 +1,7 @@
 github.com/nickwells/errutil.mod v1.1.4 h1:rK0Dld5zDIlunV7JmRmOdrhGaO+onXk+5JUvR59Cm4o=
 github.com/nickwells/errutil.mod v1.1.4/go.mod h1:4f/j+F68214AUIx750geEtfMsdBZNs6awIeYlM3VNJc=
-github.com/nickwells/pager.mod v1.0.0 h1:i54zfDgqGd3b4ZqkeXOjKG6v/W/T96ZsjJbQxrFRjN0=
-github.com/nickwells/pager.mod v1.0.0/go.mod h1:wl4YLnlSucvQdGmqDl2NimjGAxsyLEpiheY63boQI7Q=
+github.com/nickwells/pager.mod v1.0.1 h1:UC+213qx73+8jRzM0Bki+0qlZX0eA59d979osl3PN5U=
+github.com/nickwells/pager.mod v1.0.1/go.mod h1:wl4YLnlSucvQdGmqDl2NimjGAxsyLEpiheY63boQI7Q=
 github.com/nickwells/testhelper.mod v1.15.1 h1:CHOqnYXRXkIUDAv0fubNx220MyKAiFMNmmKD1glFtvU=
 github.com/nickwells/testhelper.mod v1.15.1/go.mod h1:Ct/U2PjL0n9hGc+US6uR/s4NxSRI33NM+0ZkrDkG0XI=
 github.com/nickwells/twrap.mod v1.4.13 h1:Big+VVxQRWbwufMoA9rHw5wrjN8Nec9/zeo87dM3ALw=
