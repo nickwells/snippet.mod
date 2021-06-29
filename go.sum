@@ -1,13 +1,13 @@
 github.com/nickwells/errutil.mod v1.2.1 h1:G6f4MmD60XEjKPu5N/fKzh6NjGXtphXDz+z0SE0xJ4E=
 github.com/nickwells/errutil.mod v1.2.1/go.mod h1:SQv6BQcSp6vVAHEhkzAb3Fq+f9SlyeWNejgK6elkVuU=
-github.com/nickwells/pager.mod v1.0.5 h1:IWkuTj3mYea8Vcr1MoYH1/w4ead7p72TdMWwbLaFOIE=
-github.com/nickwells/pager.mod v1.0.5/go.mod h1:bP6v1UmAWb59uAYQI1U5GqEGmGnmeBulCsQsgdw595s=
+github.com/nickwells/pager.mod v1.0.6 h1:XZ6pF/pZ4w/ssPxXRpPvk8ZMPXGt49+LRV8DdMl9LDc=
+github.com/nickwells/pager.mod v1.0.6/go.mod h1:j+46WDSPszpDrYHSdX/kB2qfqUrfhGdqEnHs5dP6Hfg=
 github.com/nickwells/testhelper.mod v1.15.1 h1:CHOqnYXRXkIUDAv0fubNx220MyKAiFMNmmKD1glFtvU=
 github.com/nickwells/testhelper.mod v1.15.1/go.mod h1:Ct/U2PjL0n9hGc+US6uR/s4NxSRI33NM+0ZkrDkG0XI=
 github.com/nickwells/twrap.mod v1.4.15 h1:uY5TgaDrUxhUV1SVn09i45W1V3XS9YC8In1aJlOsmNM=
 github.com/nickwells/twrap.mod v1.4.15/go.mod h1:U/WQ+bTHs0BsLWHnrmHTwfJaZHnV3QIrq31VKjTgXPo=
 golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.0.0-20210616094352-59db8d763f22 h1:RqytpXGR1iVNX7psjB3ff8y7sNFinVFvkx1c8SjBkio=
-golang.org/x/sys v0.0.0-20210616094352-59db8d763f22/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.0.0-20210629170331-7dc0b73dc9fb h1:sgcyLNYiHqEd8eFVh0PflG5ABPTGcPSJacD3s19RTcY=
+golang.org/x/sys v0.0.0-20210629170331-7dc0b73dc9fb/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b h1:9zKuko04nR4gjZ4+DNjHqRlAJqbJETHwiNKDqTfOjfE=
 golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b/go.mod h1:jbD1KX2456YbFQfuXm/mYQcufACuNUgVhRMnK/tPxf8=
