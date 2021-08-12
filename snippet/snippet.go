@@ -107,10 +107,8 @@ func (s S) Matches(other S) error {
 	if err := cmpSlice("follows", s.follows, other.follows); err != nil {
 		return err
 	}
-	if err := cmpTags(s.tags, other.tags); err != nil {
-		return err
-	}
-	return nil
+
+	return cmpTags(s.tags, other.tags)
 }
 
 // cmpTags returns an error if the two tag maps are different, nil otherwise
