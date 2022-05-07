@@ -9,7 +9,7 @@ import (
 
 	"github.com/nickwells/errutil.mod/errutil"
 	"github.com/nickwells/snippet.mod/snippet"
-	"github.com/nickwells/testhelper.mod/testhelper"
+	"github.com/nickwells/testhelper.mod/v2/testhelper"
 )
 
 const (
@@ -131,11 +131,11 @@ func TestConfigList(t *testing.T) {
 }
 
 func TestList(t *testing.T) {
-	defer testhelper.MakeTempDir(snippet.EmptyDir, 0777)()
+	defer testhelper.MakeTempDir(snippet.EmptyDir, 0o777)()
 	defer testhelper.MakeTempDir(snippet.UnreadableDir, 0)()
-	defer testhelper.MakeTempDir(snippet.BadDir, 0777)()
+	defer testhelper.MakeTempDir(snippet.BadDir, 0o777)()
 	defer testhelper.MakeTempDir(snippet.UnreadableSubDir, 0)()
-	defer testhelper.TempChmod(snippet.UnreadableFile, 0333)()
+	defer testhelper.TempChmod(snippet.UnreadableFile, 0o333)()
 
 	testCases := []struct {
 		testhelper.ID

@@ -112,10 +112,9 @@ type ListCfg struct {
 
 // NewListCfg returns a new ListCfg holding the configuration for snippet
 // listing.
-func NewListCfg(w io.Writer,
-	dirs []string,
-	errs *errutil.ErrMap,
-	opts ...ListCfgOptFunc) (*ListCfg, error) {
+func NewListCfg(w io.Writer, dirs []string,
+	errs *errutil.ErrMap, opts ...ListCfgOptFunc,
+) (*ListCfg, error) {
 	lc := &ListCfg{
 		Writers:     pager.W(),
 		dirs:        dirs,

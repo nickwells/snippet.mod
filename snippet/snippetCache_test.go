@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/nickwells/errutil.mod/errutil"
-	"github.com/nickwells/testhelper.mod/testhelper"
+	"github.com/nickwells/testhelper.mod/v2/testhelper"
 )
 
 func TestSnippetCache(t *testing.T) {
