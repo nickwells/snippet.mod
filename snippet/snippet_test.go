@@ -9,18 +9,18 @@ import (
 	"github.com/nickwells/testhelper.mod/v2/testhelper"
 )
 
-const (
-	NoSuchDir        = "testdata/no.such.dir"
-	EmptyDir         = "testdata/empty.dir"
-	UnreadableDir    = "testdata/unreadable.dir"
-	GoodSnippets     = "testdata/good.snippets"
-	MoreGoodSnippets = "testdata/more.good.snippets"
-	BadSnippets      = "testdata/bad.snippets"
-	UnreadableFile   = "testdata/bad.snippets/toBeMadeUnreadable"
-	BadDir           = "testdata/bad.dir"
-	UnreadableSubDir = "testdata/bad.dir/unreadable.dir"
+var (
+	NoSuchDir        = filepath.Join("testdata", "no.such.dir")
+	EmptyDir         = filepath.Join("testdata", "empty.dir")
+	UnreadableDir    = filepath.Join("testdata", "unreadable.dir")
+	GoodSnippets     = filepath.Join("testdata", "good.snippets")
+	MoreGoodSnippets = filepath.Join("testdata", "more.good.snippets")
+	BadSnippets      = filepath.Join("testdata", "bad.snippets")
+	UnreadableFile   = filepath.Join("testdata", "bad.snippets", "toBeMadeUnreadable")
+	BadDir           = filepath.Join("testdata", "bad.dir")
+	UnreadableSubDir = filepath.Join("testdata", "bad.dir", "unreadable.dir")
 
-	TestSnippets = "testdata/test.snippets"
+	TestSnippets = filepath.Join("testdata", "test.snippets")
 )
 
 func TestCmpSlice(t *testing.T) {

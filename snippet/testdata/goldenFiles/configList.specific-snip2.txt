@@ -1,9 +1,6 @@
-in: /home/ngw/go/src/github.com/nickwells/snippet.mod/snippet/testdata/testListConfig
+in: testdata/testListConfig
 
-    snip1
-           Note: snip1 - Note
-
-    snip2
+    snip2/snip2.1
             Note: snip2 - Note
                   snip2 - Notes
                   snip2 - Doc

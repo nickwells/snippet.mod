@@ -1,9 +1,10 @@
+//go:build linux || darwin
+
 package snippet_test
 
 import (
 	"bytes"
 	"errors"
-	"os"
 	"path/filepath"
 	"testing"
 
@@ -14,11 +15,11 @@ import (
 
 const (
 	testDataDir    = "testdata"
-	snippetListOut = "snippetListOut"
+	goldenFilesDir = "goldenFiles"
 )
 
 var gfc = testhelper.GoldenFileCfg{
-	DirNames:               []string{testDataDir, snippetListOut},
+	DirNames:               []string{testDataDir, goldenFilesDir},
 	Sfx:                    "txt",
 	UpdFlagName:            "upd-snippet-list-files",
 	KeepBadResultsFlagName: "keep-bad-results",
@@ -30,15 +31,8 @@ func init() {
 }
 
 func TestConfigList(t *testing.T) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		t.Fatal("Couldn't get the current working directory:", err)
-	}
-	testListCfgDir := filepath.Join(cwd, "testdata", "testListConfig")
-	sNameSnip1 := filepath.Join(testListCfgDir, "snip1")
-	sNameSnip2 := filepath.Join(testListCfgDir, "snip2")
-	testListCfgDir2 := filepath.Join(cwd, "testdata", "testListConfig2")
-	sNameSnip3 := filepath.Join(testListCfgDir2, "snip3")
+	testListCfgDir := filepath.Join("testdata", "testListConfig")
+
 	testCases := []struct {
 		testhelper.ID
 		dirs    []string
@@ -73,34 +67,27 @@ func TestConfigList(t *testing.T) {
 		},
 		{
 			ID:   testhelper.MkID("configList.specific-snip1"),
-			dirs: []string{snippet.GoodSnippets},
-			opts: []snippet.ListCfgOptFunc{snippet.SetConstraints(sNameSnip1)},
+			dirs: []string{testListCfgDir},
+			opts: []snippet.ListCfgOptFunc{snippet.SetConstraints("snip1")},
 		},
 		{
 			ID:   testhelper.MkID("configList.specific-snip2"),
-			dirs: []string{snippet.GoodSnippets},
-			opts: []snippet.ListCfgOptFunc{snippet.SetConstraints(sNameSnip2)},
-		},
-		{
-			ID:   testhelper.MkID("configList.specific-testListCfgDir"),
-			dirs: []string{snippet.GoodSnippets},
-			opts: []snippet.ListCfgOptFunc{
-				snippet.SetConstraints(testListCfgDir),
-			},
+			dirs: []string{testListCfgDir},
+			opts: []snippet.ListCfgOptFunc{snippet.SetConstraints("snip2")},
 		},
 		{
 			ID:   testhelper.MkID("configList.snip3.Docs"),
-			dirs: []string{snippet.GoodSnippets},
+			dirs: []string{testListCfgDir},
 			opts: []snippet.ListCfgOptFunc{
-				snippet.SetConstraints(sNameSnip3),
+				snippet.SetConstraints("snip3"),
 				snippet.SetParts(snippet.DocsPart),
 			},
 		},
 		{
 			ID:   testhelper.MkID("configList.snip3.Docs.HideIntro"),
-			dirs: []string{snippet.GoodSnippets},
+			dirs: []string{testListCfgDir},
 			opts: []snippet.ListCfgOptFunc{
-				snippet.SetConstraints(sNameSnip3),
+				snippet.SetConstraints("snip3"),
 				snippet.SetParts(snippet.DocsPart),
 				snippet.HideIntro(true),
 			},
