@@ -19,8 +19,8 @@ const (
 	TextPart = "text"
 
 	DocsPart   = "note"
-	ExpectPart = "expects"
 	ImportPart = "imports"
+	ExpectPart = "expects"
 	FollowPart = "follows"
 	TagPart    = "tag"
 
@@ -32,14 +32,31 @@ const (
 	AfterStr   = FollowPart + ":"
 	TagStr     = TagPart + ":"
 
-	// Regexp - note they are all case-blind because of the leading "(?i)"
+	// Regexp - note that this is case-blind because of the leading "(?i)"
 	commentREStr = `^(?i)\s*//\s*` + CommentStr
-	noteREStr    = commentREStr + `\s*` + `(?:` + DocsPart + `|notes|doc|docs):\s*`
-	importREStr  = commentREStr + `\s*` + `(?:` + ImportPart + `|import):\s*`
-	expectREStr  = commentREStr + `\s*` + `(?:` + ExpectPart + `|expect):\s*`
-	afterREStr   = commentREStr + `\s*` + `(?:` + FollowPart + `|follow|comesafter):\s*`
-	tagREStr     = commentREStr + `\s*` + `(?:` + TagPart + `|tags):\s*`
 )
+
+var snippetParts = []string{
+	DocsPart,
+	ImportPart,
+	ExpectPart,
+	FollowPart,
+	TagPart,
+}
+
+var altPartNames = map[string][]string{
+	DocsPart:   {"notes", "doc", "docs"},
+	ImportPart: {"import"},
+	ExpectPart: {"expect", "comesbefore"},
+	FollowPart: {"follow", "comesafter"},
+	TagPart:    {"tags"},
+}
+
+// AltPartNames returns a slice of alternative names for the given part. Note
+// that the slice may be empty.
+func AltPartNames(part string) []string {
+	return altPartNames[part]
+}
 
 var validParts = map[string]string{
 	NamePart:   "the snippet name",
@@ -64,14 +81,30 @@ func ValidParts() map[string]string {
 	return rval
 }
 
-var (
-	commentRE = regexp.MustCompile(commentREStr)
-	noteRE    = regexp.MustCompile(noteREStr)
-	importRE  = regexp.MustCompile(importREStr)
-	expectRE  = regexp.MustCompile(expectREStr)
-	afterRE   = regexp.MustCompile(afterREStr)
-	tagRE     = regexp.MustCompile(tagREStr)
-)
+var commentRE = regexp.MustCompile(commentREStr)
+
+var snippetPartREs = map[string]*regexp.Regexp{}
+
+// altNames returns a fragment of a regular expression which represents the
+// allowed alternative names of the snippet part for the given named part. If
+// a snippet part has no alternative names an empty string is returned.
+func altNames(name string) string {
+	alt := ""
+	if altNames, ok := altPartNames[name]; ok && len(altNames) != 0 {
+		alt = "|" + strings.Join(altNames, "|")
+	}
+	return alt
+}
+
+// init - this populates the map of named snippet parts to the corresponding
+// regular expression.
+func init() {
+	for _, partName := range snippetParts {
+		reStr := commentREStr +
+			`\s*` + `(?:` + partName + altNames(partName) + `):\s*`
+		snippetPartREs[partName] = regexp.MustCompile(reStr)
+	}
+}
 
 // S records the details of the snippet
 type S struct {
@@ -290,16 +323,17 @@ func parseSnippet(content []byte, fName, sName string) (*S, error) {
 	for scanner.Scan() {
 		l := scanner.Text()
 		if commentRE.FindStringIndex(l) != nil {
-			if addMatchToSlices(l, importRE, &s.imports) {
+			if addMatchToSlices(l, snippetPartREs[ImportPart], &s.imports) {
 				continue
 			}
-			if addMatchToSlices(l, expectRE, &s.expects) {
+			if addMatchToSlices(l, snippetPartREs[ExpectPart], &s.expects) {
 				continue
 			}
-			if addMatchToSlices(l, afterRE, &s.expects, &s.follows) {
+			if addMatchToSlices(l, snippetPartREs[FollowPart],
+				&s.expects, &s.follows) {
 				continue
 			}
-			if addWholeMatchToSlice(l, noteRE, &s.docs) {
+			if addWholeMatchToSlice(l, snippetPartREs[DocsPart], &s.docs) {
 				continue
 			}
 			if s.addTag(l) {
@@ -350,7 +384,7 @@ func tidySlice(s []string) []string {
 // finds one it will parse out the tag name and value and add it to the
 // snippet tags map.
 func (s *S) addTag(line string) bool {
-	loc := tagRE.FindStringIndex(line)
+	loc := snippetPartREs[TagPart].FindStringIndex(line)
 	if loc == nil {
 		return false
 	}
