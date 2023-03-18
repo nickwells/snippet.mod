@@ -3,7 +3,7 @@ module github.com/nickwells/snippet.mod
 go 1.18
 
 require (
-	github.com/nickwells/errutil.mod v1.2.7
+	github.com/nickwells/errutil.mod v1.2.8
 	github.com/nickwells/pager.mod v1.0.11
 	github.com/nickwells/testhelper.mod/v2 v2.1.0
 )
