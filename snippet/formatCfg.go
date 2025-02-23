@@ -33,7 +33,7 @@ type partsToShow struct {
 }
 
 // initPartsToShow constructs the list of parts to show and returns it
-func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint: gocyclo
+func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint:cyclop
 	parts := []partsToShow{}
 
 	partsAndTagsEmpty := len(fc.parts) == 0 && len(fc.tags) == 0
