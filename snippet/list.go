@@ -1,7 +1,9 @@
 package snippet
 
+// we use the crypto/md5 package which is cryptographically weak but we are
+// not using it for cryptographic purposes
 import (
-	"crypto/md5"
+	"crypto/md5" //nolint:gosec
 	"fmt"
 	"io"
 	"io/fs"
@@ -256,7 +258,7 @@ func (lc *ListCfg) snippetIsEclipsed(sName, dir string) bool {
 // be recorded as errors though the duplicate snippets are still reported and
 // can be used.
 func (lc *ListCfg) recordSnippetContentHash(content []byte, fName string) {
-	hash := md5.Sum(content)
+	hash := md5.Sum(content) //nolint:gosec
 	otherFile, isDup := (lc.contentHash)[hash]
 
 	if isDup {
