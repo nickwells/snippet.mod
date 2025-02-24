@@ -90,9 +90,11 @@ var snippetPartREs = map[string]*regexp.Regexp{}
 // a snippet part has no alternative names an empty string is returned.
 func altNames(name string) string {
 	alt := ""
+
 	if altNames, ok := altPartNames[name]; ok && len(altNames) != 0 {
 		alt = "|" + strings.Join(altNames, "|")
 	}
+
 	return alt
 }
 
@@ -124,19 +126,24 @@ func (s S) Matches(other S) error {
 		return fmt.Errorf("the names differ: this: %q, other: %q",
 			s.name, other.name)
 	}
+
 	if s.path != other.path {
 		return fmt.Errorf("the paths differ: this: %q, other: %q",
 			s.path, other.path)
 	}
+
 	if err := cmpSlice("docs", s.docs, other.docs); err != nil {
 		return err
 	}
+
 	if err := cmpSlice("expects", s.expects, other.expects); err != nil {
 		return err
 	}
+
 	if err := cmpSlice("imports", s.imports, other.imports); err != nil {
 		return err
 	}
+
 	if err := cmpSlice("follows", s.follows, other.follows); err != nil {
 		return err
 	}
@@ -147,20 +154,24 @@ func (s S) Matches(other S) error {
 // cmpTags returns an error if the two tag maps are different, nil otherwise
 func cmpTags(a, b map[string][]string) error {
 	differingTags := []string{}
+
 	for k := range a {
 		if _, ok := b[k]; !ok {
 			differingTags = append(differingTags,
 				fmt.Sprintf("%q in this, not in other", k))
 		}
 	}
+
 	for k := range b {
 		if _, ok := a[k]; !ok {
 			differingTags = append(differingTags,
 				fmt.Sprintf("%q in other, not in this", k))
 		}
 	}
+
 	if len(differingTags) > 0 {
 		sort.Strings(differingTags)
+
 		return fmt.Errorf("the tag names differ:\n\t%s",
 			strings.Join(differingTags, "\n\t"))
 	}
@@ -171,6 +182,7 @@ func cmpTags(a, b map[string][]string) error {
 			return err
 		}
 	}
+
 	return nil
 }
 
@@ -196,6 +208,7 @@ func cmpSlice(name string, a, b []string) error {
 					diffs = append(diffs,
 						fmt.Sprintf("entry[%d] differs: %q != %q", i, s, b[i]))
 				}
+
 				diffCount++
 			}
 		}
@@ -232,6 +245,7 @@ func (s S) Path() string {
 func (s S) Text() []string {
 	rval := make([]string, len(s.text))
 	copy(rval, s.text)
+
 	return rval
 }
 
@@ -239,6 +253,7 @@ func (s S) Text() []string {
 func (s S) Docs() []string {
 	rval := make([]string, len(s.docs))
 	copy(rval, s.docs)
+
 	return rval
 }
 
@@ -246,7 +261,9 @@ func (s S) Docs() []string {
 // this snippet is used.
 func (s S) Expects() []string {
 	rval := make([]string, len(s.expects))
+
 	copy(rval, s.expects)
+
 	return rval
 }
 
@@ -254,7 +271,9 @@ func (s S) Expects() []string {
 // this snippet is used.
 func (s S) Imports() []string {
 	rval := make([]string, len(s.imports))
+
 	copy(rval, s.imports)
+
 	return rval
 }
 
@@ -262,7 +281,9 @@ func (s S) Imports() []string {
 // come after in any code that uses it.
 func (s S) Follows() []string {
 	rval := make([]string, len(s.follows))
+
 	copy(rval, s.follows)
+
 	return rval
 }
 
@@ -271,11 +292,14 @@ func (s S) Follows() []string {
 // used as a label for the second part.
 func (s S) Tags() map[string][]string {
 	rval := map[string][]string{}
+
 	for k, v := range s.tags {
 		c := make([]string, len(v))
+
 		copy(c, v)
 		rval[k] = c
 	}
+
 	return rval
 }
 
@@ -302,6 +326,7 @@ func readSnippetFile(dirs []string, sName string) ([]byte, string, error) {
 
 	for _, dir := range dirs {
 		fName := filepath.Join(dir, sName)
+
 		content, err := os.ReadFile(fName)
 		if err == nil {
 			return content, fName, nil
@@ -313,6 +338,7 @@ func readSnippetFile(dirs []string, sName string) ([]byte, string, error) {
 			fmt.Errorf("snippet %q is not in the snippet directory: %q",
 				sName, dirs[0])
 	}
+
 	return nil, "",
 		fmt.Errorf("snippet %q is not in any snippet directory: \"%s\"",
 			sName, strings.Join(dirs, `", "`))
@@ -326,24 +352,27 @@ func parseSnippet(content []byte, fName, sName string) (*S, error) {
 		tags: map[string][]string{},
 	}
 
-	buf := bytes.NewBuffer(content)
-	scanner := bufio.NewScanner(buf)
+	scanner := bufio.NewScanner(bytes.NewBuffer(content))
 	for scanner.Scan() {
 		l := scanner.Text()
 		if commentRE.FindStringIndex(l) != nil {
 			if addMatchToSlices(l, snippetPartREs[ImportPart], &s.imports) {
 				continue
 			}
+
 			if addMatchToSlices(l, snippetPartREs[ExpectPart], &s.expects) {
 				continue
 			}
+
 			if addMatchToSlices(l, snippetPartREs[FollowPart],
 				&s.expects, &s.follows) {
 				continue
 			}
+
 			if addWholeMatchToSlice(l, snippetPartREs[DocsPart], &s.docs) {
 				continue
 			}
+
 			if s.addTag(l) {
 				continue
 			}
@@ -376,8 +405,10 @@ func (s *S) tidy() {
 // returns it.
 func tidySlice(s []string) []string {
 	sort.Strings(s)
+
 	i := 0
 	last := ""
+
 	for _, str := range s {
 		if str != "" && str != last {
 			s[i] = str
@@ -385,6 +416,7 @@ func tidySlice(s []string) []string {
 			last = str
 		}
 	}
+
 	return s[:i]
 }
 
@@ -420,12 +452,14 @@ func addMatchToSlices(s string, re *regexp.Regexp, slcs ...*[]string) bool {
 	if loc == nil {
 		return false
 	}
+
 	text := strings.TrimSpace(s[loc[1]:])
 	if len(text) > 0 {
 		for _, slc := range slcs {
 			*slc = append(*slc, text)
 		}
 	}
+
 	return true
 }
 
@@ -435,7 +469,9 @@ func addWholeMatchToSlice(s string, re *regexp.Regexp, slc *[]string) bool {
 	if loc := re.FindStringIndex(s); loc != nil {
 		text := s[loc[1]:]
 		*slc = append(*slc, text)
+
 		return true
 	}
+
 	return false
 }

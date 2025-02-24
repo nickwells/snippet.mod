@@ -41,6 +41,7 @@ func (c Cache) Get(sName string) (*S, error) {
 	if !ok {
 		return nil, fmt.Errorf("%q is not in the snippet cache", sName)
 	}
+
 	return s, nil
 }
 

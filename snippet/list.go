@@ -34,6 +34,7 @@ func SetConstraints(vals ...string) ListCfgOptFunc {
 		for _, v := range vals {
 			lc.constraints[v] = true
 		}
+
 		return nil
 	}
 }
@@ -47,8 +48,10 @@ func SetParts(vals ...string) ListCfgOptFunc {
 				return fmt.Errorf(
 					"%q is not a valid pre-defined part of a snippet", v)
 			}
+
 			lc.formatCfg.parts[v] = true
 		}
+
 		return nil
 	}
 }
@@ -60,6 +63,7 @@ func SetTags(vals ...string) ListCfgOptFunc {
 		for _, v := range vals {
 			lc.formatCfg.tags[v] = true
 		}
+
 		return nil
 	}
 }
@@ -151,16 +155,19 @@ func (lc *ListCfg) tidy() {
 			delete(lc.constraints, k)
 		}
 	}
+
 	for k, v := range lc.parts {
 		if !v {
 			delete(lc.parts, k)
 		}
 	}
+
 	for k, v := range lc.tags {
 		if !v {
 			delete(lc.tags, k)
 		}
 	}
+
 	lc.loc = map[string]string{}
 }
 
@@ -174,12 +181,14 @@ func (lc *ListCfg) listDir(dir string, ck constraintCk) {
 				fmt.Sprintf("Bad snippets directory: %q", dir),
 				err)
 		}
+
 		return
 	}
 
 	if !lc.hideIntro {
 		lc.intro = "in: " + dir + "\n"
 	}
+
 	for _, de := range dirEntries {
 		lc.display(dir, "", de, ck)
 	}
@@ -191,6 +200,7 @@ func (lc *ListCfg) List() {
 	lc.tidy()
 
 	pgr := pager.Start(lc)
+
 	for sName := range lc.constraints {
 		if filepath.IsAbs(sName) {
 			f, err := os.Stat(sName)
@@ -227,7 +237,9 @@ func (lc *ListCfg) checkExpectedSnippetsExist() {
 	for k := range lc.expectedBy {
 		ebKeys = append(ebKeys, k)
 	}
+
 	sort.Strings(ebKeys)
+
 	for _, k := range ebKeys {
 		if _, ok := lc.loc[k]; !ok {
 			lc.errs.AddError("Missing expected snippet",
@@ -246,8 +258,10 @@ func (lc *ListCfg) snippetIsEclipsed(sName, dir string) bool {
 		lc.errs.AddError("Eclipsed snippet",
 			fmt.Errorf("%q in %q is eclipsed by the entry in %q",
 				sName, dir, otherSD))
+
 		return true
 	}
+
 	(lc.loc)[sName] = dir
 
 	return false
@@ -295,12 +309,14 @@ func (lc *ListCfg) displaySnippet(dir, fName, sName string) {
 		lc.errs.AddError(
 			"Bad snippet",
 			fmt.Errorf("snippet %q: %w", sName, err))
+
 		return
 	}
 
 	if lc.snippetIsEclipsed(sName, dir) {
 		return
 	}
+
 	lc.recordSnippetContentHash(content, fName)
 
 	s, err := parseSnippet(content, fName, sName)
@@ -324,7 +340,9 @@ func (lc *ListCfg) printIntroOnce() {
 	if lc.intro == "" {
 		return
 	}
+
 	fmt.Fprint(lc.StdW(), lc.intro)
+
 	lc.intro = ""
 }
 
@@ -335,6 +353,7 @@ func (lc *ListCfg) display(dir, subDir string, de fs.DirEntry, ck constraintCk) 
 	if subDir != "" {
 		sName = filepath.Join(subDir, sName)
 	}
+
 	fName := filepath.Join(dir, sName)
 
 	if de.Type().IsRegular() ||
@@ -343,12 +362,14 @@ func (lc *ListCfg) display(dir, subDir string, de fs.DirEntry, ck constraintCk) 
 			!lc.specificFileMatch(sName) {
 			return
 		}
+
 		lc.displaySnippet(dir, fName, sName)
 	} else if de.IsDir() {
 		if ck == checkConstraints {
 			if !lc.specificDirMatch(sName) {
 				return
 			}
+
 			if lc.constraints[sName] {
 				ck = dontCheckConstraints // turn off subsequent checking
 			}
@@ -365,10 +386,12 @@ func (lc *ListCfg) display(dir, subDir string, de fs.DirEntry, ck constraintCk) 
 func (lc *ListCfg) descend(dir, subDir string, ck constraintCk) {
 	name := filepath.Join(dir, subDir)
 	dirEntries, err := os.ReadDir(name)
+
 	if err != nil {
 		lc.errs.AddError(fmt.Sprintf("Bad sub-directory: %q", subDir), err)
 		return
 	}
+
 	for _, de := range dirEntries {
 		lc.display(dir, subDir, de, ck)
 	}
@@ -380,6 +403,7 @@ func (lc *ListCfg) specificFileMatch(sName string) bool {
 	if len(lc.constraints) == 0 {
 		return true
 	}
+
 	if lc.constraints[sName] {
 		return true
 	}
@@ -398,9 +422,11 @@ func (lc *ListCfg) specificDirMatch(subDir string) bool {
 	if len(lc.constraints) == 0 {
 		return true
 	}
+
 	if lc.constraints[subDir] {
 		return true
 	}
+
 	for k := range lc.constraints {
 		if strings.HasPrefix(k, subDir+"/") {
 			return true

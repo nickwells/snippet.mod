@@ -15,7 +15,9 @@ func TestSnippetCache(t *testing.T) {
 		name   string
 		expErr error
 	}
+
 	snippetDirs := []string{TestSnippets}
+
 	const badNoText = "badNoText"
 
 	testCases := []struct {
@@ -89,10 +91,13 @@ func TestSnippetCache(t *testing.T) {
 
 	for _, tc := range testCases {
 		sc := Cache{}
+
 		for i, sne := range tc.snippets {
 			s, err := sc.Add(snippetDirs, sne.name)
 			id := tc.IDStr() + fmt.Sprintf(" [%d]", i)
+
 			testhelper.DiffErr(t, id, "error from Add(...)", err, sne.expErr)
+
 			if err == nil {
 				sg, err := sc.Get(sne.name)
 				if err != nil {
@@ -107,6 +112,7 @@ func TestSnippetCache(t *testing.T) {
 						t.Errorf("\t: differences: %s", err)
 					}
 				}
+
 				testhelper.DiffString(t, id, "snippet name", s.Name(), sne.name)
 				testhelper.DiffString(t, id, "snippet path",
 					s.Path(), filepath.Join(TestSnippets, sne.name))
@@ -119,8 +125,10 @@ func TestSnippetCache(t *testing.T) {
 				}
 			}
 		}
+
 		errMap := errutil.NewErrMap()
 		sc.Check(errMap)
+
 		err := errMap.Matches(tc.expCheckErrs)
 		if err != nil {
 			t.Log(tc.IDStr())
@@ -176,6 +184,7 @@ func TestSnippet(t *testing.T) {
 		id := tc.IDStr()
 		sc := Cache{}
 		s, err := sc.Add(tc.dirs, tc.sName)
+
 		testhelper.DiffErr(t, id, "error", err, tc.expErr)
 		testhelper.DiffStringSlice(t, id, "text", s.Text(), tc.expText)
 		testhelper.DiffString(t, id, "name", s.Name(), tc.expName)
@@ -184,6 +193,7 @@ func TestSnippet(t *testing.T) {
 		testhelper.DiffStringSlice(t, id, "expects", s.Expects(), tc.expExpects)
 		testhelper.DiffStringSlice(t, id, "imports", s.Imports(), tc.expImports)
 		testhelper.DiffStringSlice(t, id, "follows", s.Follows(), tc.expFollows)
+
 		if err = cmpTags(s.Tags(), tc.expTags); err != nil {
 			t.Log(id)
 			t.Logf("\t: %s", err)

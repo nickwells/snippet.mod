@@ -47,6 +47,7 @@ func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint:cyclop
 				values: []string{s.name},
 			})
 	}
+
 	if fc.parts[PathPart] {
 		parts = append(parts,
 			partsToShow{
@@ -54,6 +55,7 @@ func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint:cyclop
 				values: []string{s.path},
 			})
 	}
+
 	if partsAndTagsEmpty || fc.parts[DocsPart] {
 		parts = append(parts,
 			partsToShow{
@@ -61,6 +63,7 @@ func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint:cyclop
 				values: s.docs,
 			})
 	}
+
 	if partsAndTagsEmpty || fc.parts[ImportPart] {
 		parts = append(parts,
 			partsToShow{
@@ -68,6 +71,7 @@ func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint:cyclop
 				values: s.imports,
 			})
 	}
+
 	if partsAndTagsEmpty || fc.parts[FollowPart] {
 		parts = append(parts,
 			partsToShow{
@@ -75,20 +79,25 @@ func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint:cyclop
 				values: s.follows,
 			})
 	}
+
 	if partsAndTagsEmpty || fc.parts[ExpectPart] {
 		expectedParts := make([]string, 0, len(s.expects))
+
 		for _, e := range s.expects {
 			addName := true
+
 			for _, f := range s.follows {
 				if e == f {
 					addName = false
 					break
 				}
 			}
+
 			if addName {
 				expectedParts = append(expectedParts, e)
 			}
 		}
+
 		parts = append(parts,
 			partsToShow{
 				intro:  "Expects:",
@@ -133,7 +142,9 @@ func getTagKeys(s *S) []string {
 	for k := range s.tags {
 		tagKeys = append(tagKeys, k)
 	}
+
 	sort.Strings(tagKeys)
+
 	return tagKeys
 }
 
@@ -145,6 +156,7 @@ func maxIntroLen(parts []partsToShow) int {
 			maxIntroLen = len(p.intro)
 		}
 	}
+
 	return maxIntroLen
 }
 
@@ -160,19 +172,24 @@ func (fc *formatCfg) snippetToString(s *S) string {
 				rval += l + "\n"
 			}
 		}
+
 		return rval
 	}
 
 	maxLen := maxIntroLen(parts)
+
 	for _, p := range parts {
 		var intro, blanks string
+
 		if p.intro != "" {
 			intro = fmt.Sprintf("%*s ", maxLen, p.intro)
 		}
+
 		indent := p.indent
 		if indent == 0 {
 			indent = dfltIndent
 		}
+
 		intro = strings.Repeat(" ", indent) + intro
 		blanks = strings.Repeat(" ", len(intro))
 

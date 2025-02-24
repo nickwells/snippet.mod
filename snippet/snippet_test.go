@@ -180,6 +180,7 @@ func TestReadSnippetFile(t *testing.T) {
 	if err != nil {
 		t.Fatal("Cannot get the current working directory: ", err)
 	}
+
 	absPath := filepath.Join(wd, GoodSnippets, "hw")
 
 	testCases := []struct {

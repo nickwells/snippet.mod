@@ -48,10 +48,12 @@ func TestConstraintsFileMatch(t *testing.T) {
 
 	for _, tc := range testCases {
 		var buf bytes.Buffer
+
 		errs := errutil.NewErrMap()
 		lc, _ := NewListCfg(&buf, []string{}, errs,
 			SetConstraints(tc.constraints...))
 		val := lc.specificFileMatch(tc.sName)
+
 		testhelper.DiffBool(t, tc.IDStr(), "match result", val, tc.expVal)
 	}
 }
@@ -84,10 +86,12 @@ func TestConstraintsDirMatch(t *testing.T) {
 
 	for _, tc := range testCases {
 		var buf bytes.Buffer
+
 		errs := errutil.NewErrMap()
 		lc, _ := NewListCfg(&buf, []string{}, errs,
 			SetConstraints(tc.constraints...))
 		val := lc.specificDirMatch(tc.subDir)
+
 		testhelper.DiffBool(t, tc.IDStr(), "match result", val, tc.expVal)
 	}
 }

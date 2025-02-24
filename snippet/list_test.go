@@ -96,7 +96,9 @@ func TestConfigList(t *testing.T) {
 
 	for _, tc := range testCases {
 		var buf bytes.Buffer
+
 		errs := errutil.NewErrMap()
+
 		lc, err := snippet.NewListCfg(&buf, tc.dirs, errs, tc.opts...)
 		if err != nil {
 			t.Fatal("Unexpected error:", err)
@@ -106,13 +108,16 @@ func TestConfigList(t *testing.T) {
 
 		if err = errs.Matches(tc.expErrs); err != nil {
 			var errRpt bytes.Buffer
+
 			errs.Report(&errRpt, "Snippet errors")
 			t.Log(tc.IDStr())
 			t.Log("\t: differences:", err)
 			t.Log("\t: error map:\n", errRpt.String())
 			t.Errorf("\t: unexpected error map\n\n")
+
 			continue
 		}
+
 		gfc.Check(t, tc.IDStr(), tc.ID.Name, buf.Bytes())
 	}
 }
@@ -225,23 +230,31 @@ func TestList(t *testing.T) {
 
 	for _, tc := range testCases {
 		var buf bytes.Buffer
+
 		errs := errutil.NewErrMap()
+
 		snippet.List(&buf, tc.dirs, errs)
+
 		if err := errs.Matches(tc.expErrs); err != nil {
 			var errRpt bytes.Buffer
+
 			errs.Report(&errRpt, "Snippet errors")
+
 			t.Log(tc.IDStr())
 			t.Log("\t: differences:", err)
 			t.Log("\t: error map:\n", errRpt.String())
 			t.Errorf("\t: unexpected error map\n\n")
+
 			continue
 		}
+
 		gfc.Check(t, tc.IDStr(), tc.ID.Name, buf.Bytes())
 	}
 }
 
 func TestNewListCfgSetParts(t *testing.T) {
 	badPart := "blah blah blah"
+
 	testCases := []struct {
 		testhelper.ID
 		testhelper.ExpErr
