@@ -177,18 +177,22 @@ func cmpTags(a, b map[string][]string) error {
 // cmpSlice returns an error if the two slices are different, nil otherwise.
 func cmpSlice(name string, a, b []string) error {
 	diffs := []string{}
+
 	if len(a) != len(b) {
 		diffs = append(diffs,
 			fmt.Sprintf("the lengths differ: %d != %d", len(a), len(b)))
 	}
+
 	maxBIdx := len(b) - 1
+
 	var diffCount int
-	var i int
-	var s string
-	for i, s = range a {
+
+	const maxDiffsShown = 1
+
+	for i, s := range a {
 		if i <= maxBIdx {
 			if s != b[i] {
-				if diffCount == 0 {
+				if diffCount < maxDiffsShown {
 					diffs = append(diffs,
 						fmt.Sprintf("entry[%d] differs: %q != %q", i, s, b[i]))
 				}
@@ -196,16 +200,20 @@ func cmpSlice(name string, a, b []string) error {
 			}
 		}
 	}
-	if diffCount == 2 {
+
+	if diffCount == maxDiffsShown+1 {
 		diffs = append(diffs, "an additional difference was found")
-	} else if diffCount > 2 {
+	} else if diffCount > maxDiffsShown+1 {
 		diffs = append(diffs,
-			fmt.Sprintf("%d additional differences were found", diffCount-1))
+			fmt.Sprintf("%d additional differences were found",
+				diffCount-maxDiffsShown))
 	}
+
 	if len(diffs) > 0 {
 		return fmt.Errorf("%s differs:\n\t%s",
 			name, strings.Join(diffs, "\n\t"))
 	}
+
 	return nil
 }
 
