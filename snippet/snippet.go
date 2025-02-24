@@ -390,13 +390,15 @@ func (s *S) addTag(line string) bool {
 	}
 
 	text := strings.TrimSpace(line[loc[1]:])
-	parts := strings.SplitN(text, ":", 2)
-	var tag, value string
-	tag = strings.TrimSpace(parts[0])
-	if len(parts) == 2 {
-		value = strings.TrimSpace(parts[1])
+
+	tag, value, hasVal := strings.Cut(text, ":")
+	if hasVal {
+		value = strings.TrimSpace(value)
 	}
+
+	tag = strings.TrimSpace(tag)
 	s.tags[tag] = append(s.tags[tag], value)
+
 	return true
 }
 
