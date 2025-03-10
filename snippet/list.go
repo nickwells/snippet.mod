@@ -385,8 +385,8 @@ func (lc *ListCfg) display(dir, subDir string, de fs.DirEntry, ck constraintCk) 
 // descend displays the contents of the sub directory
 func (lc *ListCfg) descend(dir, subDir string, ck constraintCk) {
 	name := filepath.Join(dir, subDir)
-	dirEntries, err := os.ReadDir(name)
 
+	dirEntries, err := os.ReadDir(name)
 	if err != nil {
 		lc.errs.AddError(fmt.Sprintf("Bad sub-directory: %q", subDir), err)
 		return
