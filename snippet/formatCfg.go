@@ -2,7 +2,8 @@ package snippet
 
 import (
 	"fmt"
-	"sort"
+	"maps"
+	"slices"
 	"strings"
 )
 
@@ -138,14 +139,7 @@ func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint:cyclop
 
 // getTagKeys returns a sorted list of tag names
 func getTagKeys(s *S) []string {
-	var tagKeys []string
-	for k := range s.tags {
-		tagKeys = append(tagKeys, k)
-	}
-
-	sort.Strings(tagKeys)
-
-	return tagKeys
+	return slices.Sorted(maps.Keys(s.tags))
 }
 
 // maxIntroLen returns the length of the longest intro.
