@@ -118,7 +118,7 @@ func TestConfigList(t *testing.T) {
 			continue
 		}
 
-		gfc.Check(t, tc.IDStr(), tc.ID.Name, buf.Bytes())
+		gfc.Check(t, tc.IDStr(), tc.Name, buf.Bytes())
 	}
 }
 
@@ -248,7 +248,7 @@ func TestList(t *testing.T) {
 			continue
 		}
 
-		gfc.Check(t, tc.IDStr(), tc.ID.Name, buf.Bytes())
+		gfc.Check(t, tc.IDStr(), tc.Name, buf.Bytes())
 	}
 }
 

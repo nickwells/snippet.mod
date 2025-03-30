@@ -49,7 +49,7 @@ func SetParts(vals ...string) ListCfgOptFunc {
 					"%q is not a valid pre-defined part of a snippet", v)
 			}
 
-			lc.formatCfg.parts[v] = true
+			lc.parts[v] = true
 		}
 
 		return nil
@@ -61,7 +61,7 @@ func SetParts(vals ...string) ListCfgOptFunc {
 func SetTags(vals ...string) ListCfgOptFunc {
 	return func(lc *ListCfg) error {
 		for _, v := range vals {
-			lc.formatCfg.tags[v] = true
+			lc.tags[v] = true
 		}
 
 		return nil
@@ -73,7 +73,7 @@ func SetTags(vals ...string) ListCfgOptFunc {
 // snippet part names before the values.
 func HideIntro(val bool) ListCfgOptFunc {
 	return func(lc *ListCfg) error {
-		lc.formatCfg.hideIntro = val
+		lc.hideIntro = val
 		return nil
 	}
 }
@@ -134,8 +134,8 @@ func NewListCfg(w io.Writer, dirs []string,
 	lc.SetStdW(w)
 	lc.SetErrW(w)
 
-	lc.formatCfg.parts = map[string]bool{}
-	lc.formatCfg.tags = map[string]bool{}
+	lc.parts = map[string]bool{}
+	lc.tags = map[string]bool{}
 
 	for _, o := range opts {
 		err := o(lc)
@@ -327,7 +327,7 @@ func (lc *ListCfg) displaySnippet(dir, fName, sName string) {
 
 	lc.recordExpectedBy(s, sName)
 
-	text := lc.formatCfg.snippetToString(s)
+	text := lc.snippetToString(s)
 	if text != "" {
 		lc.printIntroOnce()
 		fmt.Fprint(lc.StdW(), text)
