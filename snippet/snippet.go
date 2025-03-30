@@ -12,8 +12,8 @@ import (
 	"strings"
 )
 
+// These are named parts of the snippet for listing
 const (
-	// these are named parts of the snippet for listing
 	NamePart = "name"
 	PathPart = "path"
 	TextPart = "text"
@@ -23,18 +23,21 @@ const (
 	ExpectPart = "expects"
 	FollowPart = "follows"
 	TagPart    = "tag"
+)
 
-	// these correspond to semantic comments in the snippet
+// These correspond to semantic comments in the snippet
+const (
 	CommentStr = "snippet:"
 	NoteStr    = DocsPart + ":"
 	ImportStr  = ImportPart + ":"
 	ExpectStr  = ExpectPart + ":"
 	AfterStr   = FollowPart + ":"
 	TagStr     = TagPart + ":"
-
-	// Regexp - note that this is case-blind because of the leading "(?i)"
-	commentREStr = `^(?i)\s*//\s*` + CommentStr
 )
+
+// A regexp matching a snippet comment. Note that this is case-blind because
+// of the leading "(?i)"
+const commentREStr = `^(?i)\s*//\s*` + CommentStr
 
 var snippetParts = []string{
 	DocsPart,
