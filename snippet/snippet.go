@@ -316,7 +316,7 @@ func (s S) String() string {
 // returned.
 func readSnippetFile(dirs []string, sName string) ([]byte, string, error) {
 	if filepath.IsAbs(sName) {
-		content, err := os.ReadFile(sName)
+		content, err := os.ReadFile(sName) //nolint:gosec
 		return content, sName, err
 	}
 
@@ -327,7 +327,7 @@ func readSnippetFile(dirs []string, sName string) ([]byte, string, error) {
 	for _, dir := range dirs {
 		fName := filepath.Join(dir, sName)
 
-		content, err := os.ReadFile(fName)
+		content, err := os.ReadFile(fName) //nolint:gosec
 		if err == nil {
 			return content, fName, nil
 		}

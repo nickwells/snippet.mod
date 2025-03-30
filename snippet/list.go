@@ -304,7 +304,7 @@ func List(w io.Writer, dirs []string, errs *errutil.ErrMap) {
 // and prints it. Any errors detected are recorded and the snippet will not
 // be displayed.
 func (lc *ListCfg) displaySnippet(dir, fName, sName string) {
-	content, err := os.ReadFile(fName)
+	content, err := os.ReadFile(fName) //nolint:gosec
 	if err != nil {
 		lc.errs.AddError(
 			"Bad snippet",
