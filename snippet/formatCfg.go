@@ -87,11 +87,8 @@ func (fc *formatCfg) initPartsToShow(s *S) []partsToShow { //nolint:cyclop
 		for _, e := range s.expects {
 			addName := true
 
-			for _, f := range s.follows {
-				if e == f {
-					addName = false
-					break
-				}
+			if slices.Contains(s.follows, e) {
+				addName = false
 			}
 
 			if addName {

@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"maps"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -77,9 +78,7 @@ var validParts = map[string]string{
 func ValidParts() map[string]string {
 	rval := make(map[string]string)
 
-	for k, v := range validParts {
-		rval[k] = v
-	}
+	maps.Copy(rval, validParts)
 
 	return rval
 }
