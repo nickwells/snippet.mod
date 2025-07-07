@@ -207,6 +207,7 @@ func (lc *ListCfg) List() {
 			if err != nil {
 				lc.errs.AddError("Bad specific snippet",
 					fmt.Errorf("snippet %q: %w", sName, err))
+
 				continue
 			}
 
@@ -278,6 +279,7 @@ func (lc *ListCfg) recordSnippetContentHash(content []byte, fName string) {
 	if isDup {
 		lc.errs.AddError("Duplicate snippet",
 			fmt.Errorf("snippet %q is a duplicate of %q", fName, otherFile))
+
 		return
 	}
 

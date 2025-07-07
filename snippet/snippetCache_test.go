@@ -140,6 +140,7 @@ func TestSnippetCache(t *testing.T) {
 
 func TestSnippet(t *testing.T) {
 	const completeSnip = "complete"
+
 	testCases := []struct {
 		testhelper.ID
 		dirs       []string
