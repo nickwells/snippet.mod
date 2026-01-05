@@ -143,9 +143,7 @@ func getTagKeys(s *S) []string {
 func maxIntroLen(parts []partsToShow) int {
 	maxIntroLen := 0
 	for _, p := range parts {
-		if len(p.intro) > maxIntroLen {
-			maxIntroLen = len(p.intro)
-		}
+		maxIntroLen = max(len(p.intro), maxIntroLen)
 	}
 
 	return maxIntroLen
