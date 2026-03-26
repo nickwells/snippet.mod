@@ -1,6 +1,6 @@
 module github.com/nickwells/snippet.mod
 
-go 1.24.0
+go 1.26.0
 
 require (
 	github.com/nickwells/errutil.mod v1.2.22
