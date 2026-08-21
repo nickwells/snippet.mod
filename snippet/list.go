@@ -250,10 +250,11 @@ func (lc *ListCfg) checkExpectedSnippetsExist() {
 	}
 }
 
-// snippetIsEclipsed records the location that the snippet is found. It records
-// an error and returns it if the snippet is already in the snipLoc
+// snippetIsEclipsed records the location that the snippet is found. It
+// records an error and returns it if the snippet is already in the cache of
+// snippet locations.
 func (lc *ListCfg) snippetIsEclipsed(sName, dir string) bool {
-	otherSD, eclipsed := (lc.loc)[sName]
+	otherSD, eclipsed := lc.loc[sName]
 
 	if eclipsed && otherSD != dir {
 		lc.errs.AddError("Eclipsed snippet",
