@@ -264,7 +264,7 @@ func (lc *ListCfg) snippetIsEclipsed(sName, dir string) bool {
 		return true
 	}
 
-	(lc.loc)[sName] = dir
+	lc.loc[sName] = dir
 
 	return false
 }
@@ -275,7 +275,7 @@ func (lc *ListCfg) snippetIsEclipsed(sName, dir string) bool {
 // can be used.
 func (lc *ListCfg) recordSnippetContentHash(content []byte, fName string) {
 	hash := md5.Sum(content) //nolint:gosec
-	otherFile, isDup := (lc.contentHash)[hash]
+	otherFile, isDup := lc.contentHash[hash]
 
 	if isDup {
 		lc.errs.AddError("Duplicate snippet",
@@ -284,7 +284,7 @@ func (lc *ListCfg) recordSnippetContentHash(content []byte, fName string) {
 		return
 	}
 
-	(lc.contentHash)[hash] = fName
+	lc.contentHash[hash] = fName
 }
 
 // recordExpectedBy cross references all the snippets expected by a snippet
